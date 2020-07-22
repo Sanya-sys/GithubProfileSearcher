@@ -1,3 +1,7 @@
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
 <div class="container">
     <br/>
 	<div class="row justify-content-center">
@@ -5,7 +9,7 @@
                             <form class="card card-sm">
                                 <div class="card-body row no-gutters align-items-center">
                                     <div class="col-auto">
-                                        <i class="fas fa-search h4 text-body"></i>
+                                        <i class="fa fa-search "></i>
                                     </div>
                                     <div class="col">
                                         <input id="s" class="form-control form-control-lg form-control-borderless" type="search" placeholder="Search topics or keywords" name="sanya" [(ngModel)]="users">   
@@ -16,41 +20,54 @@
                                     </div>
                                 </div>
                             </form>
+                            <!-- <p *ngFor="let user of users.items">
+                                {{user.login}}
+                            </p> -->
                         </div>
                     </div><br>
     <ng-template #elseBlock1>
          <p class="text gray-800"></p>
     </ng-template>
-    <ng-template #elseBlock2>
-        <div class="row" *ngIf="divFlag==1; else elseBlock2">   
-            <div *ngFor="let user of searchdata?.items | orderBy:'score'">         
-                 <div class="col-sm">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src={{user.avatar_url}} alt="Card image cap">
-                        <div class="card-body">
-                          <p class="card-text">{{user.login}}</p>
-                          <p class="text gray-800">{{user.score}}</p>
-                        </div>
-                      </div>
-                 </div>
-             </div>
-            </div> 
-   </ng-template>
     <div *ngIf="userFlag==true;else elseBlock1">
-        <button class="btn btn-info" (click)="hightolow">High to low</button>&nbsp;
-        <button class="btn btn-info" (click)="lowtohigh">Low To High</button>
-    <div class="row" *ngIf="divFlag==0; else elseBlock2">   
-    <div *ngFor="let user of searchdata?.items">         
-         <div class="col-sm">
-            <div class="card" style="width: 18rem;">
+        <button class="btn btn-info" (click)="hightolow()">High to low</button>&nbsp;
+        <button class="btn btn-info" (click)="lowtohigh()">Low To High</button><br>
+    <div class="row" *ngIf="divFlag==0; else elseBlock2">   <br>
+        <div *ngFor="let user of searchdata?.items | paginate:{id:'list_pagination',
+        itemsPerPage:perPage,
+        currentPage:page,
+        totalItems:30}">    
+               <div class="col-sm">
+             
+            <div class="card" style="width: 18rem;" (click)="openModal(template,user.login)" >
                 <img class="card-img-top" src={{user.avatar_url}} alt="Card image cap">
                 <div class="card-body">
-                  <p class="card-text">{{user.login}}</p>
-                  <p class="text gray-800">{{user.score}}</p>
+                  <p class="card-text">{{user.login}}</p><br>
+                  <p class="text gray-800">{{user.score}}</p><br>
                 </div>
               </div>
          </div>
      </div>
     </div> 
+    <pagination-controls id="list_pagination" directionalLinks="true"  maxSize="5"[totalItems]="30" [(ngModel)]="currentPage" (pageChange)="setPage($event)"></pagination-controls>
     </div>
-</div>
+</div> 
+<ng-template #template>
+    <div class="modal-header">
+      <h5 class="modal-title pull-left"> <p class="btn btn-info"><b style="font-size: 18px;">{{secondData.login}}</b></p></h5>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div infinite-scroll='loadMore()' infinite-scroll-distance='2'>
+       <br>
+       <b>{{"Public_repos : "}}</b>{{secondData?.public_repos}}<br>
+       <b> {{"Followers : "}} </b>{{secondData?.followers}}<br>
+        <b>{{"Following : " }} </b>{{secondData?.following}}<br>
+        <b>{{"CreatedAt : " }} </b>{{secondData?.created_at | date}}<br>
+        <b>{{"AdminFlag : " }} </b>
+        <i *ngIf="secondData?.site_admin==false" class="fa fa-flag " style="font-size: 24px;" aria-hidden="true"></i>
+        <i *ngIf="secondData?.site_admin==true" class="fa fa-flag-o " style="font-size: 24px;"aria-hidden="true"></i>
+    </div>
+    </div>
+  </ng-template>

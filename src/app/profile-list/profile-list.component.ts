@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import  {ProfileserviceService} from '../profileservice.service';
-
+import { TemplateRef } from '@angular/core';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-profile-list',
   templateUrl: './profile-list.component.html',
@@ -11,7 +12,25 @@ public users:any;
 public searchdata:any;
 public userFlag=false;
 public divFlag=0;
-  constructor(private profileservice:ProfileserviceService) { }
+public secondData:any;
+currentPage=1;
+totalItems=30;
+modalRef: BsModalRef;
+perPage=3;
+page=0;
+
+  constructor(private profileservice:ProfileserviceService,private modalService: BsModalService) { }
+  openModal(template: TemplateRef<any>,user) {
+    this.modalRef = this.modalService.show(template);
+    this.profileservice.getSecondApi(user).subscribe(data =>
+      {
+        
+        this.secondData=data;
+        console.log(this.secondData);
+      }
+
+    )
+  }
 
   ngOnInit(): void {
     
@@ -34,6 +53,9 @@ public divFlag=0;
   }
   lowtohigh(){
     this.profileservice.lowtohigh();
+  }
+ setPage(event){
+    this.page=event;
   }
      
   

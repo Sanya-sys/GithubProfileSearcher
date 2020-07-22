@@ -12,13 +12,17 @@ getData(users:String)
 
   return this.http.get("https://api.github.com/search/users?q="+users);
 }
-hightolow(){
+ hightolow(){
   return this.http.get("https://api.github.com/search/users?q="+this.val+'&sort=score&direction=desc');
 
 }
 lowtohigh(){
   return this.http.get("https://api.github.com/search/users?q="+this.val+'&sort=score&direction=asc');
 
+}
+getSecondApi(user : String)
+{
+  return this.http.get("https://api.github.com/users/"+user);
 }
 
 }
