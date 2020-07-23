@@ -24,5 +24,10 @@ getSecondApi(user : String)
 {
   return this.http.get("https://api.github.com/users/"+user);
 }
+getnextpage(user :string ,counter : any){
+        
+  return this.http.get("https://api.github.com/search/users?q="+ user+"&page=" +counter);
+
+}
 
 }

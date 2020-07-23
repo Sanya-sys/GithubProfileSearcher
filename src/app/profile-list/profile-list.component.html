@@ -31,11 +31,16 @@
     <div *ngIf="userFlag==true;else elseBlock1">
         <button class="btn btn-info" (click)="hightolow()">High to low</button>&nbsp;
         <button class="btn btn-info" (click)="lowtohigh()">Low To High</button><br>
+        <div
+        class="search-results"
+        infiniteScroll
+        [infiniteScrollDistance]="2"
+        [infiniteScrollThrottle]="50"
+        (scrolled)="onScroll()"
+        > 
+
     <div class="row" *ngIf="divFlag==0; else elseBlock2">   <br>
-        <div *ngFor="let user of searchdata?.items | paginate:{id:'list_pagination',
-        itemsPerPage:perPage,
-        currentPage:page,
-        totalItems:30}">    
+        <div *ngFor="let user of searchdata?.items">    
                <div class="col-sm">
              
             <div class="card" style="width: 18rem;" (click)="openModal(template,user.login)" >
@@ -48,7 +53,6 @@
          </div>
      </div>
     </div> 
-    <pagination-controls id="list_pagination" directionalLinks="true"  maxSize="5"[totalItems]="30" [(ngModel)]="currentPage" (pageChange)="setPage($event)"></pagination-controls>
     </div>
 </div> 
 <ng-template #template>

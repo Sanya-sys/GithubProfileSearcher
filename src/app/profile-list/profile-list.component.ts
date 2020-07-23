@@ -13,11 +13,11 @@ public searchdata:any;
 public userFlag=false;
 public divFlag=0;
 public secondData:any;
-currentPage=1;
-totalItems=30;
+count=1;
+notscrolly=true;
+notEmptyPost=true;
 modalRef: BsModalRef;
-perPage=3;
-page=0;
+title:any
 
   constructor(private profileservice:ProfileserviceService,private modalService: BsModalService) { }
   openModal(template: TemplateRef<any>,user) {
@@ -54,9 +54,32 @@ page=0;
   lowtohigh(){
     this.profileservice.lowtohigh();
   }
- setPage(event){
-    this.page=event;
+
+
+  onScroll(){
+    if(this.notscrolly && this.notEmptyPost){
+          this.notscrolly=false;
+          console.log("scrolled");
+          this.loadNextPost();
+    }
   }
+ loadNextPost(){
+
+     //const lastPost = this.userData[this.userData.length - 1];
+     this.count=this.count+1; 
+     this.profileservice.getnextpage(this.users,this.count).subscribe((result:any )=>{
+       const newPost = result;
+       console.log(newPost);
+       if(newPost.length == 0 ){
+         this.notEmptyPost=false;
+       }
+       Array.prototype.push.apply(this.searchdata,newPost.items);
+       console.log(this.searchdata,newPost.items);
+      
+       this.notscrolly=true;
+     });
+
+ }
      
   
 

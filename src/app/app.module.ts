@@ -7,6 +7,9 @@ import { ProfileListComponent } from './profile-list/profile-list.component';
 import {HttpClientModule} from '@angular/common/http'
 import { ModalModule } from 'ngx-bootstrap/modal';
 import {NgxPaginationModule} from 'ngx-pagination';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import {NgxSpinnerModule} from 'ngx-spinner';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +21,9 @@ import {NgxPaginationModule} from 'ngx-pagination';
     FormsModule,
     HttpClientModule,
     ModalModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    InfiniteScrollModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
