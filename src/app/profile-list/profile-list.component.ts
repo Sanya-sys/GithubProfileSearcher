@@ -37,9 +37,9 @@ title:any
   }
   search()
   {
-    this.profileservice.getData(this.users).subscribe(data=>
+    this.profileservice.getData(this.users).subscribe((data:any)=>
       {
-        this.searchdata=data;
+        this.searchdata=data.items;
       });
       this.userFlag=true;
   }
